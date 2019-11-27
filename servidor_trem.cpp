@@ -20,8 +20,6 @@ Douglas Carvalho*/
 #define PORT_SCKT_SERVER 9734 //mesma porta pois está no mesmo host
 
 #define NUM_TRAINS 4
-#define MAX_SLEEP_TIME 4
-#define MAX_VALUE 4094
 
 using namespace BlackLib;
 
@@ -291,7 +289,7 @@ void *thread_function_4(void *arg)
 
 void *thread_function_5(void *arg)
 {
-	int entradas[NUM_TRAINS];
+	float entradas[NUM_TRAINS];
 
 	// SOCKET
 	int server_sockfd;
@@ -339,11 +337,11 @@ void *thread_function_5(void *arg)
 			exit(1);
 		}
 
-		printf("Servidor recebe: (Trem 1, Trem 2, Trem 3, Trem 4) = (%d, %d, %d, %d)\n", entradas[0], entradas[1], entradas[2], entradas[3]);
+		printf("Servidor recebe: (Trem 1, Trem 2, Trem 3, Trem 4) = (%f, %f, %f, %f)\n", entradas[0], entradas[1], entradas[2], entradas[3]);
 
 		for (int i = 0; i < NUM_TRAINS; i++)
 		{
-			tempo[i] = (entradas[i] * MAX_SLEEP_TIME) / MAX_VALUE;
+			tempo[i] = (int) entradas[i];
 		}
 
 		sleep(1);

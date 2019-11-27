@@ -53,7 +53,7 @@ int main(int argc, char *argv[])
 
 void *entradas(void *arg)
 {
-	int tempo[NUM_TRAINS];
+	float tempo[NUM_TRAINS];
 
 	ADC adc_1(AINx::AIN0);
 	ADC adc_2(AINx::AIN1);
@@ -73,14 +73,17 @@ void *entradas(void *arg)
 
 	while (true)
 	{
-		tempo[0] = adc_1.getIntValue();
-		tempo[1] = adc_2.getIntValue();
-		tempo[2] = adc_3.getIntValue();
-		tempo[3] = adc_4.getIntValue();
+		tempo[0] = adc_1.getIntValue()/4094.0;
+		tempo[1] = adc_2.getIntValue()/4094.0;
+		tempo[2] = adc_3.getIntValue()/4094.0;
+		tempo[3] = adc_4.getIntValue()/4094.0;
 
+		/*
+		Será enviado num intervalo padrão para todos de zero a um, no qual será tratado no servidor
+		*/
 		sendto(sockfd, tempo, sizeof(tempo), 0, (struct sockaddr *)&address, len);
 
-		printf("Cliente envia: (Trem 1, Trem 2, Trem 3, Trem 4) = (%d, %d, %d, %d)\n", tempo[0], tempo[1], tempo[2], tempo[3]);
+		printf("Cliente envia: (Trem 1, Trem 2, Trem 3, Trem 4) = (%f, %f, %f, %f)\n", tempo[0], tempo[1], tempo[2], tempo[3]);
 
 		sleep(1);
 	}
